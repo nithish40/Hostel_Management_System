@@ -103,9 +103,9 @@ export default function MenuEditor() {
   if (error) return <div className="text-center p-4 text-red-500">{error}</div>;
   
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className=" text-black bg-white rounded-lg shadow-md p-6">
       <h2 className="text-2xl font-bold mb-6">Manage Food Menu</h2>
-      
+
       <div className="flex space-x-2 mb-6 overflow-x-auto pb-2">
         {days.map((day) => (
           <button
@@ -113,23 +113,28 @@ export default function MenuEditor() {
             onClick={() => setSelectedDay(day)}
             className={`px-4 py-2 rounded-md capitalize ${
               selectedDay === day
-                ? 'bg-blue-500 text-black'
-                : 'bg-gray-200 hover:bg-gray-300'
+                ? "bg-blue-500 text-black"
+                : "bg-gray-200 hover:bg-gray-300"
             }`}
           >
             {day}
           </button>
         ))}
       </div>
-      
+
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {mealTypes.map((mealType) => (
           <div key={mealType} className="p-4 bg-gray-50 rounded-md">
-            <h3 className="text-lg font-semibold mb-3 capitalize">{mealType}</h3>
-            
+            <h3 className="text-lg font-semibold mb-3 capitalize">
+              {mealType}
+            </h3>
+
             <div className="space-y-3">
               {[0, 1, 2, 3, 4].map((index) => (
-                <div key={index} className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div
+                  key={index}
+                  className="grid grid-cols-1 md:grid-cols-3 gap-4"
+                >
                   <div className="col-span-1">
                     <input
                       type="text"
@@ -151,14 +156,14 @@ export default function MenuEditor() {
             </div>
           </div>
         ))}
-        
+
         <div className="pt-4">
           <button
             type="submit"
             disabled={isSubmitting}
             className="w-full bg-blue-500 hover:bg-blue-600 text-black font-medium py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
           >
-            {isSubmitting ? 'Saving...' : 'Save Menu'}
+            {isSubmitting ? "Saving..." : "Save Menu"}
           </button>
         </div>
       </form>

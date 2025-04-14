@@ -40,9 +40,9 @@ export default function OutpassList() {
   if (error) return <div className="text-center p-4 text-red-500">{error}</div>;
   
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className=" text-black bg-white rounded-lg shadow-md p-6">
       <h2 className="text-2xl font-bold mb-6">My Outpass Requests</h2>
-      
+
       {outpasses.length === 0 ? (
         <div className="text-center p-4 bg-gray-100 rounded-md">
           You haven't made any outpass requests yet.
@@ -82,16 +82,19 @@ export default function OutpassList() {
                     {outpass.destination}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {format(new Date(outpass.departureDate), 'MMM dd, yyyy HH:mm')}
+                    {format(
+                      new Date(outpass.departureDate),
+                      "MMM dd, yyyy HH:mm"
+                    )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {format(new Date(outpass.returnDate), 'MMM dd, yyyy HH:mm')}
+                    {format(new Date(outpass.returnDate), "MMM dd, yyyy HH:mm")}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {getStatusBadge(outpass.status)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {outpass.adminRemarks || '-'}
+                    {outpass.adminRemarks || "-"}
                   </td>
                 </tr>
               ))}

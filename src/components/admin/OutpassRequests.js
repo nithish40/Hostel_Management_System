@@ -65,46 +65,46 @@ export default function OutpassRequests() {
   if (error) return <div className="text-center p-4 text-red-500">{error}</div>;
   
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className=" text-black bg-white rounded-lg shadow-md p-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Outpass Requests</h2>
-        
+
         <div className="flex space-x-2">
           <button
-            onClick={() => setFilter('all')}
+            onClick={() => setFilter("all")}
             className={`px-3 py-1 rounded-md ${
-              filter === 'all' ? 'bg-blue-500 text-black' : 'bg-gray-200'
+              filter === "all" ? "bg-blue-500 text-black" : "bg-gray-200"
             }`}
           >
             All
           </button>
           <button
-            onClick={() => setFilter('pending')}
+            onClick={() => setFilter("pending")}
             className={`px-3 py-1 rounded-md ${
-              filter === 'pending' ? 'bg-yellow-500 text-black' : 'bg-gray-200'
+              filter === "pending" ? "bg-yellow-500 text-black" : "bg-gray-200"
             }`}
           >
             Pending
           </button>
           <button
-            onClick={() => setFilter('approved')}
+            onClick={() => setFilter("approved")}
             className={`px-3 py-1 rounded-md ${
-              filter === 'approved' ? 'bg-green-500 text-black' : 'bg-gray-200'
+              filter === "approved" ? "bg-green-500 text-black" : "bg-gray-200"
             }`}
           >
             Approved
           </button>
           <button
-            onClick={() => setFilter('rejected')}
+            onClick={() => setFilter("rejected")}
             className={`px-3 py-1 rounded-md ${
-              filter === 'rejected' ? 'bg-red-500 text-black' : 'bg-gray-200'
+              filter === "rejected" ? "bg-red-500 text-black" : "bg-gray-200"
             }`}
           >
             Rejected
           </button>
         </div>
       </div>
-      
+
       {filteredOutpasses.length === 0 ? (
         <div className="text-center p-4 bg-gray-100 rounded-md">
           No outpass requests found.
@@ -156,24 +156,30 @@ export default function OutpassRequests() {
                     {outpass.destination}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {format(new Date(outpass.departureDate), 'MMM dd, yyyy HH:mm')}
+                    {format(
+                      new Date(outpass.departureDate),
+                      "MMM dd, yyyy HH:mm"
+                    )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {format(new Date(outpass.returnDate), 'MMM dd, yyyy HH:mm')}
+                    {format(new Date(outpass.returnDate), "MMM dd, yyyy HH:mm")}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                      outpass.status === 'approved' 
-                        ? 'bg-green-100 text-green-800'
-                        : outpass.status === 'rejected'
-                        ? 'bg-red-100 text-red-800'
-                        : 'bg-yellow-100 text-yellow-800'
-                    }`}>
-                                          {outpass.status.charAt(0).toUpperCase() + outpass.status.slice(1)}
+                    <span
+                      className={`px-2 py-1 text-xs font-medium rounded-full ${
+                        outpass.status === "approved"
+                          ? "bg-green-100 text-green-800"
+                          : outpass.status === "rejected"
+                          ? "bg-red-100 text-red-800"
+                          : "bg-yellow-100 text-yellow-800"
+                      }`}
+                    >
+                      {outpass.status.charAt(0).toUpperCase() +
+                        outpass.status.slice(1)}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {outpass.status === 'pending' ? (
+                    {outpass.status === "pending" ? (
                       <div className="flex space-x-2">
                         <button
                           onClick={() => handleApprove(outpass._id)}
@@ -189,7 +195,7 @@ export default function OutpassRequests() {
                         </button>
                       </div>
                     ) : (
-                      <span>{outpass.adminRemarks || '-'}</span>
+                      <span>{outpass.adminRemarks || "-"}</span>
                     )}
                   </td>
                 </tr>

@@ -55,9 +55,9 @@ export default function IssuesList() {
   if (error) return <div className="text-center p-4 text-red-500">{error}</div>;
   
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className=" text-black bg-white rounded-lg shadow-md p-6">
       <h2 className="text-2xl font-bold mb-6">My Reported Issues</h2>
-      
+
       {issues.length === 0 ? (
         <div className="text-center p-4 bg-gray-100 rounded-md">
           You haven't reported any issues yet.
@@ -65,7 +65,10 @@ export default function IssuesList() {
       ) : (
         <div className="space-y-4">
           {issues.map((issue) => (
-            <div key={issue._id} className="border border-gray-200 rounded-lg p-4">
+            <div
+              key={issue._id}
+              className="border border-gray-200 rounded-lg p-4"
+            >
               <div className="flex justify-between items-start">
                 <h3 className="text-lg font-semibold">{issue.title}</h3>
                 <div className="flex space-x-2">
@@ -73,15 +76,19 @@ export default function IssuesList() {
                   {getStatusBadge(issue.status)}
                 </div>
               </div>
-              
+
               <p className="mt-2 text-gray-600">{issue.description}</p>
-              
+
               <div className="mt-4 pt-3 border-t border-gray-100 flex justify-between text-sm text-gray-500">
-                <span>Reported on {format(new Date(issue.createdAt), 'MMM dd, yyyy')}</span>
-                
+                <span>
+                  Reported on{" "}
+                  {format(new Date(issue.createdAt), "MMM dd, yyyy")}
+                </span>
+
                 {issue.adminRemarks && (
                   <div className="ml-4">
-                    <span className="font-medium">Admin remarks:</span> {issue.adminRemarks}
+                    <span className="font-medium">Admin remarks:</span>{" "}
+                    {issue.adminRemarks}
                   </div>
                 )}
               </div>

@@ -50,7 +50,7 @@ export default function OutpassForm() {
   };
   
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className=" text-black bg-white rounded-lg shadow-md p-6">
       <h2 className="text-2xl font-bold mb-6">Request Outpass</h2>
       
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

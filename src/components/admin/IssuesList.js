@@ -80,46 +80,48 @@ export default function AdminIssuesList() {
   if (error) return <div className="text-center p-4 text-red-500">{error}</div>;
   
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className=" text-black bg-white rounded-lg shadow-md p-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Reported Issues</h2>
-        
+
         <div className="flex space-x-2">
           <button
-            onClick={() => setFilter('all')}
+            onClick={() => setFilter("all")}
             className={`px-3 py-1 rounded-md ${
-              filter === 'all' ? 'bg-blue-500 text-black' : 'bg-gray-200'
+              filter === "all" ? "bg-blue-500 text-black" : "bg-gray-200"
             }`}
           >
             All
           </button>
           <button
-            onClick={() => setFilter('pending')}
+            onClick={() => setFilter("pending")}
             className={`px-3 py-1 rounded-md ${
-              filter === 'pending' ? 'bg-yellow-500 text-black' : 'bg-gray-200'
+              filter === "pending" ? "bg-yellow-500 text-black" : "bg-gray-200"
             }`}
           >
             Pending
           </button>
           <button
-            onClick={() => setFilter('in-progress')}
+            onClick={() => setFilter("in-progress")}
             className={`px-3 py-1 rounded-md ${
-              filter === 'in-progress' ? 'bg-blue-500 text-black' : 'bg-gray-200'
+              filter === "in-progress"
+                ? "bg-blue-500 text-black"
+                : "bg-gray-200"
             }`}
           >
             In Progress
           </button>
           <button
-            onClick={() => setFilter('resolved')}
+            onClick={() => setFilter("resolved")}
             className={`px-3 py-1 rounded-md ${
-              filter === 'resolved' ? 'bg-green-500 text-black' : 'bg-gray-200'
+              filter === "resolved" ? "bg-green-500 text-black" : "bg-gray-200"
             }`}
           >
             Resolved
           </button>
         </div>
       </div>
-      
+
       {filteredIssues.length === 0 ? (
         <div className="text-center p-4 bg-gray-100 rounded-md">
           No issues found.
@@ -127,31 +129,40 @@ export default function AdminIssuesList() {
       ) : (
         <div className="space-y-4">
           {filteredIssues.map((issue) => (
-            <div key={issue._id} className="border border-gray-200 rounded-lg p-4">
+            <div
+              key={issue._id}
+              className="border border-gray-200 rounded-lg p-4"
+            >
               <div className="flex justify-between items-start">
                 <div>
                   <h3 className="text-lg font-semibold">{issue.title}</h3>
                   <div className="mt-1 flex items-center space-x-2">
                     <span className="text-sm text-gray-600">
-                      {issue.student.name} • Room {issue.student.hostelBlock}-{issue.student.roomNumber}
+                      {issue.student.name} • Room {issue.student.hostelBlock}-
+                      {issue.student.roomNumber}
                     </span>
                     {getCategoryBadge(issue.category)}
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                    issue.status === 'resolved' 
-                      ? 'bg-green-100 text-green-800'
-                      : issue.status === 'in-progress'
-                      ? 'bg-blue-100 text-blue-800'
-                      : 'bg-yellow-100 text-yellow-800'
-                  }`}>
-                    {issue.status === 'in-progress' ? 'In Progress' : issue.status.charAt(0).toUpperCase() + issue.status.slice(1)}
+                  <span
+                    className={`px-2 py-1 text-xs font-medium rounded-full ${
+                      issue.status === "resolved"
+                        ? "bg-green-100 text-green-800"
+                        : issue.status === "in-progress"
+                        ? "bg-blue-100 text-blue-800"
+                        : "bg-yellow-100 text-yellow-800"
+                    }`}
+                  >
+                    {issue.status === "in-progress"
+                      ? "In Progress"
+                      : issue.status.charAt(0).toUpperCase() +
+                        issue.status.slice(1)}
                   </span>
-                  
-                  {issue.status !== 'resolved' && (
+
+                  {issue.status !== "resolved" && (
                     <div className="flex space-x-2">
-                      {issue.status === 'pending' && (
+                      {issue.status === "pending" && (
                         <button
                           onClick={() => handleInProgress(issue._id)}
                           className="px-3 py-1 bg-blue-500 text-black rounded-md hover:bg-blue-600 text-xs"
@@ -169,15 +180,19 @@ export default function AdminIssuesList() {
                   )}
                 </div>
               </div>
-              
+
               <p className="mt-3 text-gray-600">{issue.description}</p>
-              
+
               <div className="mt-4 pt-3 border-t border-gray-100 flex justify-between text-sm text-gray-500">
-                <span>Reported on {format(new Date(issue.createdAt), 'MMM dd, yyyy')}</span>
-                
+                <span>
+                  Reported on{" "}
+                  {format(new Date(issue.createdAt), "MMM dd, yyyy")}
+                </span>
+
                 {issue.adminRemarks && (
                   <div className="ml-4">
-                    <span className="font-medium">Admin remarks:</span> {issue.adminRemarks}
+                    <span className="font-medium">Admin remarks:</span>{" "}
+                    {issue.adminRemarks}
                   </div>
                 )}
               </div>
