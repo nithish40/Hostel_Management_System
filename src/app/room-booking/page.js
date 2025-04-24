@@ -9,25 +9,15 @@ export default function RoomBooking() {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userRoom, setUserRoom] = useState(null);
-  const { register, handleSubmit, watch } = useForm();
+  const [totalAvailableBeds, setTotalAvailableBeds] = useState(0); // Track total available beds
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
   const router = useRouter();
   const roomType = watch("roomType");
-
-  // Fetch if the user already booked a room
-  useEffect(() => {
-    const fetchUserRoom = async () => {
-      try {
-        const response = await axios.get("/api/user/room");
-        if (response.data.room) {
-          setUserRoom(response.data.room);
-        }
-      } catch (error) {
-        console.error("Failed to fetch user room info", error);
-      }
-    };
-
-    fetchUserRoom();
-  }, []);
 
   // Fetch available rooms when roomType changes
   useEffect(() => {
@@ -39,7 +29,16 @@ export default function RoomBooking() {
         const response = await axios.get("/api/rooms", {
           params: { roomType, available: true },
         });
-        setRooms(response.data);
+        const fetchedRooms = response.data.rooms;
+
+        // Calculate total available beds across all rooms
+        const availableBeds = fetchedRooms.reduce((acc, room) => {
+          return acc + (room.capacity - room.occupants.length);
+        }, 0);
+
+        setRooms(fetchedRooms);
+        setTotalAvailableBeds(availableBeds);
+        console.log(rooms);
       } catch (error) {
         toast.error("Failed to load rooms");
       } finally {
@@ -96,12 +95,16 @@ export default function RoomBooking() {
               {...register("roomType", { required: true })}
               className="w-full p-2 border rounded"
               disabled={userRoom}
+              defaultValue=""
             >
               <option value="">Select Room Type</option>
               <option value="AC Room">AC Room</option>
               <option value="Non-AC Room">Non-AC Room</option>
-              <option value="Deluxe Room">Deluxe Room</option>
+              <option value="Delux Room">Deluxe Room</option>
             </select>
+            {errors.roomType && (
+              <p className="text-red-500 text-sm">Room type is required</p>
+            )}
           </div>
 
           <div>
@@ -122,7 +125,7 @@ export default function RoomBooking() {
                     value={room._id}
                     disabled={room.occupants.length >= room.capacity}
                   >
-                    {room.block} - {room.roomNo} ({room.roomType}) -{" "}
+                    {room.block} - {room.roomNumber} ({room.roomType}) -{" "}
                     {room.capacity - room.occupants.length} beds left
                   </option>
                 ))}
@@ -130,6 +133,14 @@ export default function RoomBooking() {
             ) : (
               <p>No rooms available for selected type</p>
             )}
+            {errors.roomId && (
+              <p className="text-red-500 text-sm">Please select a room</p>
+            )}
+          </div>
+
+          <div className="text-sm text-gray-600 mt-2">
+            <strong>Total Available Beds: </strong>
+            {totalAvailableBeds}
           </div>
 
           <button

@@ -42,7 +42,7 @@
 const mongoose = require("mongoose");
 
 const roomSchema = new mongoose.Schema({
-  roomNo: { type: String, required: true, unique: true },
+  roomNumber: { type: String, required: true, unique: true },
   roomType: {
     type: String,
     enum: ["AC Room", "Non-AC Room", "Deluxe Room"],

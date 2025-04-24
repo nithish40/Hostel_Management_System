@@ -7,8 +7,12 @@ import { getCurrentUser } from "@/lib/auth";
 export async function POST(request) {
   try {
     await dbConnect();
+    console.log("hi this is boaz");
+
     const user = await getCurrentUser();
     const { roomId } = await request.json();
+    console.log("the below is roomid");
+    console.log(roomId);
 
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -30,7 +34,7 @@ export async function POST(request) {
         { status: 400 }
       );
     }
-
+    console.log(room.occupants.length);
     // Check capacity
     if (room.occupants.length >= room.capacity) {
       return NextResponse.json({ error: "Room is full" }, { status: 400 });
@@ -41,18 +45,34 @@ export async function POST(request) {
       roomId,
       { $addToSet: { occupants: user.id } },
       { new: true }
-    ).populate("occupants", "name email");
+    );
 
+    // Check if the room is updated correctly
+    if (!updatedRoom) {
+      return NextResponse.json(
+        { error: "Room update failed" },
+        { status: 500 }
+      );
+    }
     // Update User
     const updatedUser = await User.findByIdAndUpdate(
       user.id,
       {
-        roomNo: updatedRoom.roomNo,
-        block: updatedRoom.block,
-        roomType: updatedRoom.roomType,
+        roomNumber: updatedRoom.toObject().roomNumber, // Ensure roomNo exists in Room model
+
+        hostelBlock: updatedRoom.block, // Ensure block exists in Room model
+        roomType: updatedRoom.toObject().roomType, // Ensure roomType exists in Room model
       },
       { new: true }
     );
+
+    // Check if user update is successful
+    if (!updatedUser) {
+      return NextResponse.json(
+        { error: "User update failed" },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({
       message: "Room booked successfully",
@@ -60,6 +80,7 @@ export async function POST(request) {
       user: updatedUser,
     });
   } catch (error) {
+    console.error(error); // Log error to console for better debugging
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

@@ -1,17 +1,24 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { signOut } from 'next-auth/react';
-import { FaHome, FaUtensils, FaClipboardList, FaTools, FaSignOutAlt } from 'react-icons/fa';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
+import {
+  FaHome,
+  FaUtensils,
+  FaClipboardList,
+  FaTools,
+  FaSignOutAlt,
+} from "react-icons/fa";
+import { FaBed } from "react-icons/fa";
 
 export default function AdminSidebar() {
   const pathname = usePathname();
-  
+
   const isActive = (path) => {
-    return pathname === path ? 'bg-blue-700' : '';
+    return pathname === path ? "bg-blue-700" : "";
   };
-  
+
   return (
     <div className="bg-blue-800 text-white w-64 min-h-screen flex flex-col">
       <div className="p-4 text-xl font-bold border-b border-blue-700">

@@ -1,24 +1,29 @@
 import { NextResponse } from "next/server";
-
-// Dummy data - replace this with your DB logic
-const mockUserRoom = {
-  block: "A",
-  roomNo: "101",
-  roomType: "AC Room",
-  occupants: ["user1", "user2"],
-  capacity: 3,
-};
+import { getServerSession } from "next-auth"; // Assuming you're using next-auth for session management
+import { authOptions } from "@/lib/auth"; // Your auth configuration
+import dbConnect from "@/lib/mongodb";
+import Room from "@/models/room"; // Mongoose model or Prisma model
 
 // GET /api/user/room
 export async function GET(request) {
   try {
-    // In real app, get the user session (auth) and fetch their room from DB
-    // const session = await getServerSession(authOptions);
-    // const room = await Room.findOne({ occupants: session.user.id });
+    await dbConnect(); // Ensure DB connection
 
-    // Just mock response for now
-    return NextResponse.json({ room: mockUserRoom });
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Fetch user room data from DB (replace with your logic)
+    const room = await Room.findOne({ occupants: session.user.id }).exec();
+
+    if (!room) {
+      return NextResponse.json({ error: "Room not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ room });
   } catch (error) {
+    console.error("Error fetching room:", error);
     return NextResponse.json(
       { error: "Failed to fetch room" },
       { status: 500 }
