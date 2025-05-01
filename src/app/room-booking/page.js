@@ -30,7 +30,6 @@ export default function RoomBooking() {
           params: { roomType, available: true },
         });
         const fetchedRooms = response.data.rooms;
-
         // Calculate total available beds across all rooms
         const availableBeds = fetchedRooms.reduce((acc, room) => {
           return acc + (room.capacity - room.occupants.length);
@@ -48,7 +47,6 @@ export default function RoomBooking() {
 
     fetchRooms();
   }, [roomType, userRoom]);
-
   const onSubmit = async (data) => {
     if (userRoom) return; // Prevent booking if already booked
 

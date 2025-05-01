@@ -71,15 +71,6 @@ export default function AdminSidebar() {
               Manage Issues
             </Link>
           </li>
-          <li>
-            <Link
-              href="/admin/room-assignment"
-              className="flex items-center p-3 rounded-md hover:bg-blue-700"
-            >
-              <FaBed className="mr-3" />
-              Room Assignment
-            </Link>
-          </li>
         </ul>
       </nav>
 

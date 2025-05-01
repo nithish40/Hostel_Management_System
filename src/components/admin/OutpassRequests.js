@@ -1,69 +1,81 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { format } from 'date-fns';
-import { toast } from 'react-toastify';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { format } from "date-fns";
+import { toast } from "react-toastify";
 
 export default function OutpassRequests() {
   const [outpasses, setOutpasses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [filter, setFilter] = useState('all');
-  
+  const [filter, setFilter] = useState("all");
+
   useEffect(() => {
     const fetchOutpasses = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('/api/outpass');
+        const response = await axios.get("/api/outpass");
         setOutpasses(response.data);
+        console.log("this is outpass");
+        console.log(outpasses);
         setLoading(false);
       } catch (err) {
-        setError('Failed to load outpass requests. Please try again later.');
+        setError("Failed to load outpass requests. Please try again later.");
         setLoading(false);
       }
     };
-    
+
     fetchOutpasses();
   }, []);
-  
-  const updateOutpassStatus = async (id, status, remarks = '') => {
+
+  const updateOutpassStatus = async (id, status, remarks = "") => {
     try {
-      await axios.put('/api/outpass', {
+      await axios.put("/api/outpass", {
         id,
         status,
-        adminRemarks: remarks
+        adminRemarks: remarks,
       });
-      
-      setOutpasses(outpasses.map(outpass => 
-        outpass._id === id ? { ...outpass, status, adminRemarks: remarks } : outpass
-      ));
-      
-      toast.success(`Outpass ${status === 'approved' ? 'approved' : 'rejected'} successfully`);
+
+      setOutpasses(
+        outpasses.map((outpass) =>
+          outpass._id === id
+            ? { ...outpass, status, adminRemarks: remarks }
+            : outpass
+        )
+      );
+
+      toast.success(
+        `Outpass ${
+          status === "approved" ? "approved" : "rejected"
+        } successfully`
+      );
     } catch (error) {
-      toast.error('Failed to update outpass status');
+      toast.error("Failed to update outpass status");
     }
   };
-  
+
   const handleApprove = (id) => {
-    updateOutpassStatus(id, 'approved', 'Approved by admin');
+    console.log(id);
+    updateOutpassStatus(id, "approved", "Approved by admin");
   };
-  
+
   const handleReject = (id) => {
-    const remarks = prompt('Please provide a reason for rejection:');
+    const remarks = prompt("Please provide a reason for rejection:");
     if (remarks !== null) {
-      updateOutpassStatus(id, 'rejected', remarks);
+      updateOutpassStatus(id, "rejected", remarks);
     }
   };
-  
-  const filteredOutpasses = outpasses.filter(outpass => {
-    if (filter === 'all') return true;
+
+  const filteredOutpasses = outpasses.filter((outpass) => {
+    if (filter === "all") return true;
     return outpass.status === filter;
   });
-  
-  if (loading) return <div className="text-center p-4">Loading outpass requests...</div>;
+
+  if (loading)
+    return <div className="text-center p-4">Loading outpass requests...</div>;
   if (error) return <div className="text-center p-4 text-red-500">{error}</div>;
-  
+
   return (
     <div className=" text-black bg-white rounded-lg shadow-md p-6">
       <div className="flex justify-between items-center mb-6">
@@ -144,10 +156,12 @@ export default function OutpassRequests() {
               {filteredOutpasses.map((outpass) => (
                 <tr key={outpass._id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {outpass.student.name}
+                    {outpass.student?.name || "Unknown"}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {outpass.student.hostelBlock}-{outpass.student.roomNumber}
+                    {/* {outpass.hostelBlock}-{outpass.roomNumber} */}
+                    {outpass.student?.hostelBlock || "Unknown"}-
+                    {outpass.student?.roomNumber || "Unknown"}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {outpass.reason}
